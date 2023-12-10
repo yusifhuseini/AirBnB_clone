@@ -1,194 +1,290 @@
-0x00. AirBnB clone - The console
+# AirBnB clone - The console
 
-<p align="center">
-   <img src="/images/hbnb_logo.png" alt="AirBnb Clone logo"
-	width="720" height="300"/>
-</p>
+  ---
 
-# Team Project AirBnb Clone
-Hbnb: HolbertonBnb is AirBnb Clone, a complete web application that composed by :
- - A Command interpreter to manipulate data without a visual interface.
- - A website (the Front-end) that shows the final product to everybody: static and dynamic.
- - A database or files that store data.
- - An API that provides a communication interface between the front-end and data (retrieve, create, delete, update them).
+  ## Summary
+  This is the first step towards building your first full web application: the
+  AirBnB clone. This first step is very important because you will use what you
+  build during this project with all other following projects: HTML/CSS
+  templating, database storage, API, front-end integration and more. For this
+  project, the back-end console has been implemented.
 
-In this project, we will implement the first part: The console.
+  ## Class Models
 
-# Models (Classes)
-This project composes of the following classes:
+  The following classes were created for this project:
 
-| class Name | Public Instance Attributes | Public Instance Methods | Public Class Attributes | Private Class Attributes |
-| ---------- | ------------------- | ---------------- | ---------------- | ------------- |
-| BaseModel | * id: string <br> * created_at: datetime <br> * updated_at: datetime | * save <br> * to_dict |  |  |
-| FileStorage | | * all <br> * new <br> * save <br> * reload | | * file_path: string <br> * objects: dictionary |
-| User | | | * email: string <br> * password: string <br> * first_name: string <br> last_name: string | |
-| State | | | * name: string | |
-| City | | | * state_id: string <br> * name: string | |
-| Amenity | | | * name: string | |
-| Place | | | * city_id: string <br> * user_id: string <br> * name: string <br> * description: string <br> * number_rooms: integer <br> * number_bathrooms: integer <br> * max_guest: integer <br> * price_by_night: integer <br> * latitude: float <br> * longitude: float <br> * amenity_ids: list of string | |
-| Review | | | * place_id: string <br> * user_id: string <br> * text: string | |
+  - BaseModel:
 
-# Storage
-All models are handled by a storage engine defined in the FileStorage model.
+    - `id`, `created_at`, `updated_at`
 
-When we start our command interpreter, HolbertonBnb instantiates an instance of `FileStorage` called `storage`. The `storage` object load/reload all the class instances stored in the JSON file `HA_YA_FILE.json`.
-When a class instance is created, updated, deleted, the object `storage` register the corresponding changes into JSON file `HA_YA_FILE.json`.
+  - User:
+    - `emaiil`, `password`, `first_name`, `last_name`
 
+  - State:
+    - `name`
 
-# Console : Command line Interpreter
-The Console is command line interpreter, it manage the backend part of the HolbertonBnb application
-by managing objects and storing/persisting the objects from/to JSON file.
+  - City:
+    - `state_id`, `name`
 
-## How to start the Console
+  - Amenity:
+    - `name`
 
-The console is executed in interactive mode by running `./console.py`, and a prompt when be displaying and waiting for input:
+  - Place:
+    - `city_id`, `user_id`, `name`, `description`, `number_rooms`
+    - `number_bathrooms`, `max_guest`, `price_by_night`, `latitudde`
+    - `longitude`, `amenity_id`
 
-```
-$ ./console.py
-(hbnb) help
-```
+  - Review:
+    - `place_id`, `user_id`, `text`
 
-Also in non-interactive mode by piping command to the executable console file:
+  ## Database (File Storage)
+ 
+  [FileStorage](./models/engine/file_storage.py) is the storage engine that
+  persists database interaction.
 
-```
-$ echo "help" | ./console.py
-(hbnb)
+  The storage object is an instantiation of `FileStorage` class.
+  The `storage` object is loaded/re-loaded from any class instances
+  stored in the JSON file `file.json`. As class instances are created,
+  updated, or deleted, the `storage` object is used to register 
+  corresponding changes in the `file.json`.
 
-Documented commands (type help <topic>):
-========================================
-EOF help quit
-(hbnb) 
-$
-```
+  ## Command Line Interpreter (Console)
 
-```
-$ cat test_help
-help
-$
-$ cat test_help | ./console.py
-(hbnb)
+  The console is a command line interpreter that permits management of the
+  backend 
+  of AirBnB. It can be used to handle and manipulate all classes utilized
+  by 
+  the application (achieved by calls on the `storage` object defined above).
 
-Documented commands (type help <topic>):
-========================================
-EOF help quit
-(hbnb) 
-$
-```
-## How to use the console
+  ### Familiarizing the Console
 
-To show command help, we enter the command help:
+  The AirBnB console can be run both interactively and non-interactively. 
+  To run the console in non-interactive mode, pipe any command(s) into an
+  execution 
+  of the file `console.py` at the command line.
 
-```
-$ ./console.py
-(hbnb) help
+  ```
+  $ echo "help" | ./console.py
+  (hbnb) 
+  Documented commands (type help <topic>):
+  ========================================
+  EOF  all  count  create  destroy  help  quit  show  update
 
-Documented commands (type help <topic>):
-========================================
-EOF help quit
+  (hbnb) 
+  $
+  ```
 
-(hbnb)
-```
-To quit the Console, press CTRL+D (to input EOF signal) or enter quit command:
+  Alternatively, to use the HolbertonBnB console in interactive mode, run the 
+  file `console.py` by itself:
 
-```
-$ ./console.py
-(hbnb) EOF
-$
-```
+  ```
+  $ ./console.py
+  ```
 
-```
-$ ./console.py
-(hbnb) quit
-$
-```
+  While running in interactive mode, the console displays a prompt for input:
 
+  ```
+  $ ./console.py
+  (hbnb) 
+  ```
 
-# Commands
+  To quit the console, enter the command `quit`, or input an EOF signal 
+  (`ctrl-D`).
 
-Holberton console handles the followings commands:
+  ```
+  $ ./console.py
+  (hbnb) quit
+  $
+  ```
 
-* create: 
-	* Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id.
-	* Usage: create <class name>
+  ```
+  $ ./console.py
+  (hbnb) EOF
+  $
+  ```
 
-Example of creating a User:
+  ### Running Commands
 
-```
-$ ./console.py
-(hbnb) create User
-82a6f205-779b-4292-8678-fb53c90fb64e
-(hbnb)
-```
+  The AirBnB console supports the following commands:
 
-* show:
-	* Prints the string representation of an instance based on the class name and id.
-	* Usage: show <class name> <id>
+  * **create**
+    * Usage: `create <class>`
 
-Example of showing the User instance:
+    Creates a new instance of a given class. The class' ID is printed and 
+    the instance is saved to the file `file.json`.
 
-```
-$ ./console.py
-(hbnb) show User 83880763-f364-4e70-8bc5-1ad5218378fe
-(hbnb) show User 83880763-f364-4e70-8bc5-1ad5218378fe
-[User] (83880763-f364-4e70-8bc5-1ad5218378fe) {'id': '83880763-f364-4e70-8bc5-1ad5218378fe', 'created_at': datetime.datetime(2023, 8, 10, 13, 29, 20, 460431), 'updated_at': datetime.datetime(2023, 8, 10, 13, 29, 20, 460436)}
-(hbnb)
-```
+    ```
+    $ ./console.py
+    (hbnb) create BaseModel
+    791b4d1b-5873-4473-8f05-1d5042f3ea55
+    (hbnb) quit
+    $ cat file.json ; echo ""
+    {"User.791b4d1b-5873-4473-8f05-1d5042f3ea55": {"id":
+    "791b4d1b-5873-4473-8f05-1d5042f3ea55", "
+    created_at": "2022-08-08T03:33:44.586704", "updated_at":
+    "2022-08-08T03:33:44.586716", "__clas
+    s__": "User"}}
+    ```
 
-* destroy:
-	* Deletes an instance based on the class name and id (save the change into the JSON file).
-	* Usage: destroy <class name> <id>
+  * **show**
+    * Usage: `show <class> <id>` or `<class>.show(<id>)`
 
-Example of destroying an instance of User that is already stored in the JSON file:
+    Prints the string representation of a class instance based on a given id.
 
-```
-$ ./console.py
-(hbnb) destroy User 83880763-f364-4e70-8bc5-1ad5218378fe
-(hbnb)
-```
+    ```
+    $ ./console.py
+    (hbnb) create BaseModel
+    b9fffc7a-7460-4a92-9557-33069a224ad8
+    (hbnb)
+    (hbnb) show BaseModel b9fffc7a-7460-4a92-9557-33069a224ad8
+    [BaseModel] (b9fffc7a-7460-4a92-9557-33069a224ad8) {'id':
+    'b9fffc7a-7460-4a92-9557-33069a224ad
+    8', 'created_at': datetime.datetime(2022, 8, 8, 3, 36, 16, 197918),
+    'updated_at': datetime.dat
+    etime(2022, 8, 8, 3, 36, 16, 197929)}
+    (hbnb) 
+    (hbnb) BaseModel.show("b9fffc7a-7460-4a92-9557-33069a224ad8")
+    [BaseModel] (b9fffc7a-7460-4a92-9557-33069a224ad8) {'id':
+    'b9fffc7a-7460-4a92-9557-33069a224ad
+    8', 'created_at': datetime.datetime(2022, 8, 8, 3, 36, 16, 197918),
+    'updated_at': datetime.dat
+    etime(2022, 8, 8, 3, 36, 16, 197929)}
+    (hbnb) 
+    ```
+  * **destroy**
+    * Usage: `destroy <class> <id>` or `<class>.destroy(<id>)`
 
-* all:
-	* Prints all string representation of all instances based or not on the class name.
-	* Usage: all <class name> or all
+    Deletes a class instance based on a given id. The storage file
+    `file.json` 
+    is updated accordingly.
 
-Example of printing instances of all classes:
-```
-$ ./console.py
-(hbnb) all
-["[BaseModel] (c07899a9-85f0-439b-851e-624bbb74b996) {'id': 'c07899a9-85f0-439b-851e-624bbb74b996', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 47, 772518), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 47, 772525)}", "[BaseModel] (12f855f0-0b0e-44ab-baee-1d0e29d3a51f) {'id': '12f855f0-0b0e-44ab-baee-1d0e29d3a51f', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 49, 896756), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 49, 896759)}", "[Place] (268500c2-ce81-428a-be70-e71b2ca61704) {'id': '268500c2-ce81-428a-be70-e71b2ca61704', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 55, 799743), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 55, 799748)}", "[Place] (707a4dc3-e294-4d09-a6e6-24f0302125c4) {'id': '707a4dc3-e294-4d09-a6e6-24f0302125c4', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 57, 317565), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 57, 317569)}", "[Amenity] (5ccd437b-7ee0-4919-b652-c96ea48ef3e2) {'id': '5ccd437b-7ee0-4919-b652-c96ea48ef3e2', 'created_at': datetime.datetime(2023, 8, 10, 13, 43, 3, 162054), 'updated_at': datetime.datetime(2023, 8, 10, 13, 43, 3, 162058)}"]
-(hbnb)
-```
+    ```
+    $ ./console.py
+    (hbnb) create Review
+    3a82eb9b-ebec-41b3-ad10-d671397152ed
+    (hbnb)
+    (hbnb) destroy BaseModel b9fffc7a-7460-4a92-9557-33069a224ad8
+    (hbnb) Review.destroy("3a82eb9b-ebec-41b3-ad10-d671397152ed")
+    (hbnb) quit
+    $ cat file.json ; echo ""
+    {}
+    ```
 
-Example of printing instance of a specific class (for example : Place)
-```
-$ ./console.py
-(hbnb) all Place
-["[Place] (268500c2-ce81-428a-be70-e71b2ca61704) {'id': '268500c2-ce81-428a-be70-e71b2ca61704', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 55, 799743), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 55, 799748)}", "[Place] (707a4dc3-e294-4d09-a6e6-24f0302125c4) {'id': '707a4dc3-e294-4d09-a6e6-24f0302125c4', 'created_at': datetime.datetime(2023, 8, 10, 13, 42, 57, 317565), 'updated_at': datetime.datetime(2023, 8, 10, 13, 42, 57, 317569)}"]
-(hbnb)
-```
+  * **all**
+    * Usage: `all` or `all <class>` or `<class>.all()`
 
-* update:
-	* Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file).
-	* Usage: update <class name> <id> <attribute name> "<attribute value>"
+    Prints the string representations of all instances of a given class.
+    If no 
+    class name is provided, the command prints all instances of every
+    class.
 
-```
-$ ./console.py
-(hbnb) update Place 268500c2-ce81-428a-be70-e71b2ca61704 number_rooms 35
-(hbnb) 
-```
+    ```
+    $ ./console.py
+    (hbnb) create Place
+    1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0
+    (hbnb) create State
+    5775db45-1e19-4d23-91ee-d6e77f39fd1e
+    (hbnb)
+    (hbnb) all
+    ["[Place] (1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0) {'id':
+    '1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0'
+    , 'created_at': datetime.datetime(2022, 8, 8, 3, 45, 7, 308633),
+    'updated_at': datetime.dateti
+    me(2022, 8, 8, 3, 45, 7, 308644)}", "[State]
+    (5775db45-1e19-4d23-91ee-d6e77f39fd1e) {'id': '57
+    75db45-1e19-4d23-91ee-d6e77f39fd1e', 'created_at':
+    datetime.datetime(2022, 8, 8, 3, 45, 41, 90
+    1544), 'updated_at': datetime.datetime(2022, 8, 8, 3, 45, 41,
+    901557)}"]
+    (hbnb)
+    (hbnb) State.all()
+    ["[State] (5775db45-1e19-4d23-91ee-d6e77f39fd1e) {'id':
+    '5775db45-1e19-4d23-91ee-d6e77f39fd1e'
+    , 'created_at': datetime.datetime(2022, 8, 8, 3, 45, 41, 901544),
+    'updated_at': datetime.datetime(2022, 8, 8, 3, 45, 41, 901557)}"]
+    (hbnb) 
+    (hbnb) all Place
+    ["[Place] (1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0) {'id':
+    '1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0'
+    , 'created_at': datetime.datetime(2022, 8, 8, 3, 45, 7, 308633),
+    'updated_at': datetime.datetime(2022, 8, 8, 3, 45, 7, 308644)}]
+    (hbnb) 
+    ```
 
-# Tests
+  * **count**
+    * Usage: `count <class>` or `<class>.count()`
 
-Launch tests:
-```
-python3 -m unittest discover tests
-```
+    Retrieves the number of instances of a given class.
 
-All tests should also pass in non-interactive mode: 
+    ```
+    $ ./console.py
+    (hbnb) create City
+    b39aed1b-44a0-49a5-b9ce-97061eda5afe
+    (hbnb) create City
+    98c01385-9152-4063-baa9-dcd4640ad83c
+    (hbnb) 
+    (hbnb) City.count()
+    2
+    (hbnb) 
+    ```
 
-```
-$ echo "python3 -m unittest discover tests" | bash
-```
+  * **update**
+    * Usage: `update <class> <id> <attribute name> "<attribute
+    * value>"` or
+    `<class>.update(<id>, <attribute name>, <attribute value>)` or
+    `<class>.update(<id>, <attribute dictionary>)`.
 
-# Authors :
-- **Esther Ebunoluwa Adedokun** <[Esther Ebunoluwa Adedokun](https://github.com/EbunAdee)>
-- **Yusif Huseini** <[Yusif Huseini](https://github.com/yusifhuseini)>
+    Updates a class instance based on a given id with a given
+    key/value attribute 
+    pair or dictionary of attribute pairs. If `update` is called with a single 
+    key/value attribute pair, only "simple" attributes can be updated (ie. not 
+    `id`, `created_at`, and `updated_at`). However, any attribute can
+    be updated by 
+    providing a dictionary.
+
+    ```
+    $ ./console.py
+    (hbnb) create Place
+    1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0
+    (hbnb)
+    (hbnb) update Place 1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0 location "south"
+    (hbnb) show Place 1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0
+    [Place] (1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0) {'id':
+    '1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0',
+    'created_at': datetime.datetime(2022, 8, 8, 3, 45, 7, 308633),
+    'updated_at': datetime.datetime
+    (2022, 8, 8, 3, 58, 35, 306147), 'location': 'south'}
+    (hbnb)
+    (hbnb) Place.update("1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0", "rooms", 5)
+    (hbnb)
+    (hbnb) Place.show("1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0")
+    [Place] (1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0) {'id':
+    '1fec9bbc-210c-4fa0-b4e1-0caad1a62bb0',
+    'created_at': datetime.datetime(2022, 8, 8, 3, 45, 7, 308633),
+    'updated_at': datetime.datetime
+    (2022, 8, 8, 4, 0, 14, 570897), 'location': 'south', 'rooms': 5}
+    (hbnb) 
+    ```
+
+    ## Testing
+
+    Unittests for the HolbertonBnB project are defined in the
+    [tests](./tests) 
+    folder. To run the entire test suite simultaneously, execute the
+    following command:
+
+    ```
+    $ python3 unittest -m discover tests
+    ```
+
+    Alternatively, you can specify a single test file to run at a time:
+
+    ```
+    $ python3 unittest -m tests/test_console.py
+    ```
+
+    ## Authors
+  * **Huseini Yusif**
+    * <[Huseini](https://github.com/yusifhuseini)>
+  * **Esther Adedokun**
+    * <[Esther](https://github.com/EbunAdee)>
